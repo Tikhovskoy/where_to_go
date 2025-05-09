@@ -1,7 +1,19 @@
+from django import forms
 from django.contrib import admin
+from tinymce.widgets import TinyMCE
 from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
 from django.utils.html import format_html
 from .models import Place, PlaceImage
+
+class PlaceForm(forms.ModelForm):
+    description_long = forms.CharField(
+        label='Полное описание',
+        widget=TinyMCE(attrs={'cols': 80, 'rows': 30})
+    )
+
+    class Meta:
+        model = Place
+        fields = '__all__'
 
 
 class PlaceImageInline(SortableInlineAdminMixin, admin.TabularInline):
@@ -13,7 +25,7 @@ class PlaceImageInline(SortableInlineAdminMixin, admin.TabularInline):
 
     def preview(self, obj):
         """
-        Превью загруженной картинки (max-height:200px).
+        Мини-превью картинки в inline.
         """
         try:
             if obj.image and hasattr(obj.image, 'url'):
@@ -22,13 +34,14 @@ class PlaceImageInline(SortableInlineAdminMixin, admin.TabularInline):
                     obj.image.url
                 )
         except Exception:
-            import traceback; print(traceback.format_exc())
+            import traceback; traceback.print_exc()
         return ""
     preview.short_description = 'Предпросмотр'
 
 
 @admin.register(Place)
 class PlaceAdmin(SortableAdminMixin, admin.ModelAdmin):
+    form = PlaceForm
     list_display = ('title', 'latitude', 'longitude')
     search_fields = ('title',)
     inlines = [PlaceImageInline]
@@ -43,7 +56,7 @@ class PlaceImageAdmin(admin.ModelAdmin):
 
     def preview(self, obj):
         """
-        Превью картинки в списке PlaceImageAdmin.
+        Превью для списка PlaceImageAdmin.
         """
         try:
             if obj.image and hasattr(obj.image, 'url'):
@@ -52,6 +65,6 @@ class PlaceImageAdmin(admin.ModelAdmin):
                     obj.image.url
                 )
         except Exception:
-            import traceback; print(traceback.format_exc())
+            import traceback; traceback.print_exc()
         return ""
-    preview.short_description = 'Превью'
+    preview.short_description = 'Предпросмотр'
