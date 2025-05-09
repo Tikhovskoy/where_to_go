@@ -10,11 +10,11 @@ SECRET_KEY = os.getenv(
     'django-insecure-fallback-secret-key'
 )
 
-# DEBUG-режим по переменной, по умолчанию False
-DEBUG = os.getenv('DEBUG', 'False').lower() in ('1', 'true', 'yes')
+# DEBUG-режим по переменной, по умолчанию True (для разработки)
+DEBUG = os.getenv('DEBUG', 'True').lower() in ('1', 'true', 'yes')
 
-# ALLOWED_HOSTS берём из строки через запятую
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+# ALLOWED_HOSTS по переменной или по умолчанию localhost и 127.0.0.1
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 # Приложения
 INSTALLED_APPS = [

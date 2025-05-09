@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from places.models import Place
 
+
 def start_page(request):
     """
     Сбор локаций из базы данных и передача GeoJSON во фронтенд.

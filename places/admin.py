@@ -5,6 +5,7 @@ from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
 from django.utils.html import format_html
 from .models import Place, PlaceImage
 
+
 class PlaceForm(forms.ModelForm):
     description_long = forms.CharField(
         label='Полное описание',
