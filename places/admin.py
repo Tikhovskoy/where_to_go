@@ -1,18 +1,19 @@
 from django.contrib import admin
+from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
 from django.utils.html import format_html
 from .models import Place, PlaceImage
 
 
-class PlaceImageInline(admin.TabularInline):
+class PlaceImageInline(SortableInlineAdminMixin, admin.TabularInline):
     model = PlaceImage
     extra = 1
-    fields = ('image', 'preview', 'order')
+    sortable_field_name = 'order'
+    fields = ('preview', 'image', 'order')
     readonly_fields = ('preview',)
-    ordering = ('order',)
 
     def preview(self, obj):
         """
-        Показывает превью загруженной картинки в админке.
+        Превью загруженной картинки (max-height:200px).
         """
         try:
             if obj.image and hasattr(obj.image, 'url'):
@@ -27,7 +28,7 @@ class PlaceImageInline(admin.TabularInline):
 
 
 @admin.register(Place)
-class PlaceAdmin(admin.ModelAdmin):
+class PlaceAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = ('title', 'latitude', 'longitude')
     search_fields = ('title',)
     inlines = [PlaceImageInline]
@@ -35,13 +36,15 @@ class PlaceAdmin(admin.ModelAdmin):
 
 @admin.register(PlaceImage)
 class PlaceImageAdmin(admin.ModelAdmin):
-    list_display = ('place', 'order', 'image_tag')
+    list_display = ('place', 'order', 'preview')
     list_filter = ('place',)
     ordering = ('place', 'order')
-    readonly_fields = ('image_tag',)
+    readonly_fields = ('preview',)
 
-    def image_tag(self, obj):
-        """Показывает превью картинки в списке PlaceImageAdmin"""
+    def preview(self, obj):
+        """
+        Превью картинки в списке PlaceImageAdmin.
+        """
         try:
             if obj.image and hasattr(obj.image, 'url'):
                 return format_html(
@@ -51,4 +54,4 @@ class PlaceImageAdmin(admin.ModelAdmin):
         except Exception:
             import traceback; print(traceback.format_exc())
         return ""
-    image_tag.short_description = 'Превью'
+    preview.short_description = 'Превью'
