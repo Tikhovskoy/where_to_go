@@ -1,5 +1,6 @@
 import json
 from django.shortcuts import render
+from django.urls import reverse
 from places.models import Place
 
 def start_page(request):
@@ -17,13 +18,14 @@ def start_page(request):
             "properties": {
                 "title": place.title,
                 "placeId": place.pk,
-                "detailsUrl": "#"  
+                "detailsUrl": reverse('place-detail', args=[place.pk])
             }
         })
     geojson = {
         "type": "FeatureCollection",
         "features": features
     }
+    places_geojson = json.dumps(geojson, ensure_ascii=False)
     return render(request, 'start.html', {
-        "places_geojson": json.dumps(geojson, ensure_ascii=False)
+        'places_geojson': places_geojson
     })
