@@ -101,3 +101,7 @@
 | `DATABASE_URL`  | URL базы данных (Postgres, SQLite и т.д.) | `sqlite:///db.sqlite3` |
 | `TIME_ZONE`     | Часовой пояс                              | `UTC`                  |
 
+## Демо-сайт
+
+Проект развернут на PythonAnywhere:  
+[https://tikhovskoi.pythonanywhere.com](https://tikhovskoi.pythonanywhere.com)
