@@ -1,8 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from core.views import start_page
-from places.views import place_detail
-
+from places.views import start_page, place_detail 
 from django.conf import settings
 from django.conf.urls.static import static
 
