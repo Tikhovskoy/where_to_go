@@ -2,6 +2,7 @@ import requests
 from django.core.management.base import BaseCommand, CommandError
 from django.core.management import call_command
 
+
 class Command(BaseCommand):
     help = (
         'Load all place JSON files from a GitHub repo directory. '
@@ -42,4 +43,4 @@ class Command(BaseCommand):
             except Exception as e:
                 self.stderr.write(self.style.ERROR(f'Error loading {name}: {e}'))
         self.stdout.write(self.style.SUCCESS('Done.'))
-
+        

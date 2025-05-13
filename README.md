@@ -91,6 +91,26 @@
 * Управление локациями: поля `title`, `latitude`, `longitude`, `description_short`, `description_long` (TinyMCE).
 * Inline управление изображениями с предпросмотром и drag-and-drop упорядочиванием.
 
+## Импорт данных
+
+### Загрузка одного места
+
+Для загрузки одной локации из JSON-файла используйте встроенную Django-команду `load_place`:
+
+```bash
+python manage.py load_place https://example.com/places/moscow_legends.json
+````
+
+### Массовая загрузка всех мест из каталога на GitHub
+
+Чтобы загрузить все локации сразу из каталога JSON-файлов (например, из репозитория на GitHub):
+
+```bash
+python manage.py load_places_all https://api.github.com/repos/devmanorg/where-to-go-places/contents/places
+```
+
+> Для запуска команд необходимо, чтобы у вас был запущен сервер и применены миграции.
+
 ## Переменные окружения
 
 | Переменная      | Описание                                  | По умолчанию           |
