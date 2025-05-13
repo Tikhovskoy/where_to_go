@@ -56,6 +56,7 @@ class PlaceImageAdmin(admin.ModelAdmin):
     list_filter = ('place',)
     ordering = ('place', 'order')
     readonly_fields = ('preview',)
+    autocomplete_fields = ['place'] 
 
     def preview(self, obj):
         """
