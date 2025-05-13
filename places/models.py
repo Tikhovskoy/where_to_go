@@ -4,6 +4,7 @@ from django.db import models
 class Place(models.Model):
     title = models.CharField(
         max_length=200,
+        unique=True,
         verbose_name='Название'
     )
     short_description = models.TextField(
