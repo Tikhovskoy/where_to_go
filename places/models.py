@@ -6,10 +6,10 @@ class Place(models.Model):
         max_length=200,
         verbose_name='Название'
     )
-    description_short = models.TextField(
+    short_description = models.TextField(
         verbose_name='Краткое описание'
     )
-    description_long = models.TextField(
+    long_description = models.TextField(
         verbose_name='Полное описание'
     )
     latitude = models.FloatField(
@@ -37,8 +37,8 @@ class Place(models.Model):
             "properties": {
                 "id": self.pk,
                 "title": self.title,
-                "short_description": self.description_short,
-                "long_description": self.description_long,
+                "short_description": self.short_description,
+                "long_description": self.long_description,
                 "imgs": [img.image.url for img in self.images.order_by('order')],
             },
         }
