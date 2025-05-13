@@ -9,7 +9,7 @@ from .models import Place, PlaceImage
 
 
 class PlaceForm(forms.ModelForm):
-    description_long = forms.CharField(
+    long_description = forms.CharField(
         label='Полное описание',
         widget=TinyMCE(attrs={'cols': 80, 'rows': 30})
     )
