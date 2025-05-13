@@ -1,44 +1,38 @@
-import os
 from pathlib import Path
-from dotenv import load_dotenv
-load_dotenv()
+from environs import Env
 
+# Инициализация environs
+env = Env()
+env.read_env()
 
 # Базовая папка проекта
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY: секретный ключ из окружения (для dev fallback — sqlite-ключ)
-SECRET_KEY = os.environ['SECRET_KEY']
+# SECURITY: секретный ключ из окружения (обязательно)
+SECRET_KEY = env.str('SECRET_KEY')
 
 # DEBUG-режим по переменной, по умолчанию True (для разработки)
-DEBUG = os.getenv('DEBUG', 'True').lower() in ('1', 'true', 'yes')
+DEBUG = env.bool('DEBUG', True)
 
 # ALLOWED_HOSTS по переменной или по умолчанию localhost и 127.0.0.1
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ['127.0.0.1', 'localhost'])
 
 # Приложения
 INSTALLED_APPS = [
-    # сторонние
     'tinymce',
     'adminsortable2',
-
-    # стандартные
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # наши
     'places',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # WhiteNoise — для отдачи статики в production
     'whitenoise.middleware.WhiteNoiseMiddleware',
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -67,19 +61,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'where_to_go.wsgi.application'
 
-
 # База данных: из DATABASE_URL или sqlite по умолчанию
-import dj_database_url  # pip install dj-database-url
+import dj_database_url
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+    'default': dj_database_url.parse(
+        env.str('DATABASE_URL', f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
         conn_max_age=600
     )
 }
 
-
-# Парольная валидация
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -87,14 +78,12 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
 # Локализация
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = os.getenv('TIME_ZONE', 'UTC')
+TIME_ZONE = env.str('TIME_ZONE', 'UTC')
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
 
 # Статика
 STATIC_URL = '/static/'
@@ -105,7 +94,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Медиа (загружаемые файлы)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
 
 # TinyMCE
 TINYMCE_DEFAULT_CONFIG = {
@@ -127,5 +115,4 @@ TINYMCE_DEFAULT_CONFIG = {
     'branding': False,
 }
 
-# По умолчанию для новых моделей
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
