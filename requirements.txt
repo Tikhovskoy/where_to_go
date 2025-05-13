@@ -5,3 +5,4 @@ django-tinymce==4.1.0
 Pillow==11.2.1
 whitenoise==6.9.0
 requests>=2.0.0
+python-dotenv==1.0.1

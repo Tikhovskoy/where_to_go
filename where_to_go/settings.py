@@ -1,14 +1,14 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv()
+
 
 # Базовая папка проекта
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY: секретный ключ из окружения (для dev fallback — sqlite-ключ)
-SECRET_KEY = os.getenv(
-    'SECRET_KEY',
-    'django-insecure-fallback-secret-key'
-)
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # DEBUG-режим по переменной, по умолчанию True (для разработки)
 DEBUG = os.getenv('DEBUG', 'True').lower() in ('1', 'true', 'yes')
