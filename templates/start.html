@@ -5,18 +5,13 @@
   <meta charset="utf-8">
   <title>Куда пойти — Москва глазами Артёма</title>
 
-  <!-- favicon -->
   <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/png">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <!-- CDN CSS -->
-  <link rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"/>
-  <link rel="stylesheet"
-        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
-  <link rel="stylesheet"
-        href="https://unpkg.com/@ansur/leaflet-pulse-icon@0.1.1/dist/L.Icon.Pulse.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/@ansur/leaflet-pulse-icon@0.1.1/dist/L.Icon.Pulse.css"/>
 
   <!-- Локальный CSS -->
   <link rel="stylesheet" href="{% static 'css/leaflet-sidebar.css' %}">
@@ -29,12 +24,8 @@
     .select-place-prompt { color: red; width: 100px; }
   </style>
 
-  <!-- GeoJSON из базы -->
-  <script id="places-geojson" type="application/json">
-    {{ places_geojson|safe }}
-  </script>
+  {{ places_geojson|json_script:"places-geojson" }}
 
-  <!-- Vue-шаблон -->
   {% verbatim %}
   <script id="app-template" type="text/template">
     <div v-bind:class="{'sidebar-content':1,'bg-white':selectedPlace,'bg-secondary':!selectedPlace}">

@@ -1,8 +1,7 @@
-import json
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.conf import settings
-from django.http import JsonResponse  
+from django.http import JsonResponse
 from .models import Place
 
 def start_page(request):
@@ -30,7 +29,7 @@ def start_page(request):
     }
 
     return render(request, 'start.html', {
-        'places_geojson': json.dumps(geojson, ensure_ascii=False),
+        'places_geojson': geojson, 
         'show_debug_toggle': settings.DEBUG,
     })
 

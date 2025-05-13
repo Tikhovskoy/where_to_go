@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # наши
-    'core',
     'places',
 ]
 

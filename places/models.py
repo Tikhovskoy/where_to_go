@@ -21,17 +21,42 @@ class Place(models.Model):
 
     class Meta:
         ordering = ['id']
+        verbose_name = 'Место'
+        verbose_name_plural = 'Места'
 
     def __str__(self):
         return self.title
+
+    def as_geojson_feature(self):
+        return {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [self.longitude, self.latitude],
+            },
+            "properties": {
+                "id": self.pk,
+                "title": self.title,
+                "short_description": self.description_short,
+                "long_description": self.description_long,
+                "imgs": [img.image.url for img in self.images.order_by('order')],
+            },
+        }
+
+    @classmethod
+    def get_geojson(cls):
+        return {
+            "type": "FeatureCollection",
+            "features": [place.as_geojson_feature() for place in cls.objects.all()],
+        }
 
 
 class PlaceImage(models.Model):
     place = models.ForeignKey(
         Place,
-        on_delete=models.CASCADE,
         related_name='images',
-        verbose_name='Локация'
+        on_delete=models.CASCADE,
+        verbose_name='Место'
     )
     image = models.ImageField(
         upload_to='place_images/',
