@@ -4,9 +4,11 @@ from django.conf import settings
 from django.http import JsonResponse
 from .models import Place
 
+
 def start_page(request):
     """
-    Собираем все места из БД в GeoJSON и рендерим стартовую страницу.
+    Получает все локации из базы данных и формирует GeoJSON.
+    Рендерит стартовую страницу со всеми локациями и их координатами.
     """
     features = []
     for place in Place.objects.all():
@@ -19,7 +21,7 @@ def start_page(request):
             "properties": {
                 "title": place.title,
                 "placeId": place.pk,
-                "detailsUrl": reverse('place-detail', args=[place.pk])
+                "detailsUrl": reverse("place-detail", args=[place.pk])
             }
         })
 
@@ -28,21 +30,25 @@ def start_page(request):
         "features": features
     }
 
-    return render(request, 'start.html', {
-        'places_geojson': geojson, 
-        'show_debug_toggle': settings.DEBUG,
+    return render(request, "start.html", {
+        "places_geojson": geojson,
+        "show_debug_toggle": settings.DEBUG,
     })
 
 
 def place_detail(request, pk):
     """
-    API endpoint to return JSON details of a place.
+    Возвращает JSON с подробной информацией о месте.
+    Оптимизировано с prefetch_related для загрузки изображений одним запросом.
     """
-    place = get_object_or_404(Place, pk=pk)
+    place = get_object_or_404(
+        Place.objects.prefetch_related("images"),
+        pk=pk
+    )
     data = {
-        'title': place.title,
-        'imgs': [img.image.url for img in place.images.all()],
-        'description_short': place.description_short,
-        'description_long': place.description_long,
+        "title": place.title,
+        "imgs": [img.image.url for img in place.images.all()],
+        "description_short": place.short_description,
+        "description_long": place.long_description,
     }
-    return JsonResponse(data, json_dumps_params={'ensure_ascii': False, 'indent': 2})
+    return JsonResponse(data, json_dumps_params={"ensure_ascii": False, "indent": 2})
