@@ -54,8 +54,8 @@ class Command(BaseCommand):
                     "latitude": lat,
                 },
             )
-            verb = "Created" if created else "Updated"
-            self.stdout.write(self.style.SUCCESS(f'{verb} place: {place.title}'))
+            operation_status = "Created" if created else "Updated"
+            self.stdout.write(self.style.SUCCESS(f'{operation_status} place: {place.title}'))
 
             place.images.all().delete()
             imgs = place_payload.get("imgs", [])
