@@ -33,7 +33,7 @@ class PlaceImageInline(SortableInlineAdminMixin, admin.TabularInline):
         try:
             if obj.image and hasattr(obj.image, 'url'):
                 return format_html(
-                    '<img src="{}" style="max-height:200px; width:auto;" />',
+                    '<img src="{}" style="max-height:200px; max-width:100%; object-fit: contain;" />',
                     obj.image.url
                 )
         except Exception:
@@ -64,7 +64,7 @@ class PlaceImageAdmin(admin.ModelAdmin):
         try:
             if obj.image and hasattr(obj.image, 'url'):
                 return format_html(
-                    '<img src="{}" style="max-height:200px; width:auto;" />',
+                    '<img src="{}" style="max-height:200px; max-width:100%; object-fit: contain;" />',
                     obj.image.url
                 )
         except Exception:
