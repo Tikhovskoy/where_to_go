@@ -3,6 +3,8 @@ from django.contrib import admin
 from tinymce.widgets import TinyMCE
 from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
 from django.utils.html import format_html
+import traceback
+
 from .models import Place, PlaceImage
 
 
@@ -35,7 +37,7 @@ class PlaceImageInline(SortableInlineAdminMixin, admin.TabularInline):
                     obj.image.url
                 )
         except Exception:
-            import traceback; traceback.print_exc()
+            traceback.print_exc()
         return ""
     preview.short_description = 'Предпросмотр'
 
@@ -66,6 +68,6 @@ class PlaceImageAdmin(admin.ModelAdmin):
                     obj.image.url
                 )
         except Exception:
-            import traceback; traceback.print_exc()
+            traceback.print_exc()
         return ""
     preview.short_description = 'Предпросмотр'

@@ -1,5 +1,7 @@
 from pathlib import Path
 from environs import Env
+import dj_database_url
+
 
 # Инициализация environs
 env = Env()
@@ -60,9 +62,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'where_to_go.wsgi.application'
-
-# База данных: из DATABASE_URL или sqlite по умолчанию
-import dj_database_url
 
 DATABASES = {
     'default': dj_database_url.parse(
