@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
 
 from .models import Place
 
@@ -11,25 +10,7 @@ def start_page(request):
     Получает все локации из базы данных и формирует GeoJSON.
     Рендерит стартовую страницу со всеми локациями и их координатами.
     """
-    features = []
-    for place in Place.objects.all():
-        features.append({
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [place.longitude, place.latitude]
-            },
-            "properties": {
-                "title": place.title,
-                "placeId": place.pk,
-                "detailsUrl": reverse("place-detail", args=[place.pk])
-            }
-        })
-
-    geojson = {
-        "type": "FeatureCollection",
-        "features": features
-    }
+    geojson = Place.get_geojson()
 
     return render(request, "start.html", {
         "places_geojson": geojson,
