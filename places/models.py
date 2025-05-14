@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Place(models.Model):
@@ -43,6 +44,7 @@ class Place(models.Model):
                 "short_description": self.short_description,
                 "long_description": self.long_description,
                 "imgs": [img.image.url for img in self.images.order_by("order")],
+                "detailsUrl": reverse("place-detail", args=[self.pk]),
             },
         }
 
