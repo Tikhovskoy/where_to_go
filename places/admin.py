@@ -1,9 +1,10 @@
+import traceback
+
+from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
 from django import forms
 from django.contrib import admin
-from tinymce.widgets import TinyMCE
-from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
 from django.utils.html import format_html
-import traceback
+from tinymce.widgets import TinyMCE
 
 from .models import Place, PlaceImage
 

@@ -1,7 +1,7 @@
 from pathlib import Path
-from environs import Env
-import dj_database_url
 
+import dj_database_url
+from environs import Env
 
 # Инициализация environs
 env = Env()
