@@ -5,32 +5,32 @@ class Place(models.Model):
     title = models.CharField(
         max_length=200,
         unique=True,
-        verbose_name='Название'
+        verbose_name="Название"
     )
     short_description = models.TextField(
-        verbose_name='Краткое описание',
+        verbose_name="Краткое описание",
         blank=True
     )
     long_description = models.TextField(
-        verbose_name='Полное описание',
+        verbose_name="Полное описание",
         blank=True
     )
     latitude = models.FloatField(
-        verbose_name='Широта'
+        verbose_name="Широта"
     )
     longitude = models.FloatField(
-        verbose_name='Долгота'
+        verbose_name="Долгота"
     )
 
     class Meta:
-        ordering = ['id']
-        verbose_name = 'Место'
-        verbose_name_plural = 'Места'
+        ordering = ["id"]
+        verbose_name = "Место"
+        verbose_name_plural = "Места"
 
     def __str__(self):
         return self.title
 
-    def as_geojson_feature(self):
+    def to_geojson_feature(self):
         return {
             "type": "Feature",
             "geometry": {
@@ -42,7 +42,7 @@ class Place(models.Model):
                 "title": self.title,
                 "short_description": self.short_description,
                 "long_description": self.long_description,
-                "imgs": [img.image.url for img in self.images.order_by('order')],
+                "imgs": [img.image.url for img in self.images.order_by("order")],
             },
         }
 
@@ -50,31 +50,31 @@ class Place(models.Model):
     def get_geojson(cls):
         return {
             "type": "FeatureCollection",
-            "features": [place.as_geojson_feature() for place in cls.objects.all()],
+            "features": [place.to_geojson_feature() for place in cls.objects.all()],
         }
 
 
 class PlaceImage(models.Model):
     place = models.ForeignKey(
         Place,
-        related_name='images',
+        related_name="images",
         on_delete=models.CASCADE,
-        verbose_name='Место'
+        verbose_name="Место"
     )
     image = models.ImageField(
-        upload_to='place_images/',
-        verbose_name='Изображение'
+        upload_to="place_images/",
+        verbose_name="Изображение"
     )
     order = models.PositiveIntegerField(
         default=0,
-        verbose_name='Порядок',
+        verbose_name="Порядок",
         db_index=True
     )
 
     class Meta:
-        ordering = ['order']
-        verbose_name = 'Изображение места'
-        verbose_name_plural = 'Изображения мест'
+        ordering = ["order"]
+        verbose_name = "Изображение места"
+        verbose_name_plural = "Изображения мест"
 
     def __str__(self):
-        return f'{self.place.title} — фото #{self.order}'
+        return f"{self.place.title} — фото #{self.order}"
