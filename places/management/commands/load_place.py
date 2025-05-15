@@ -35,13 +35,13 @@ class Command(BaseCommand):
         except Exception:
             raise CommandError("Invalid or missing coordinates in JSON")
 
-        short_desc = (
-            place_payload.get("description_short")
+        short_description = (
+            place_payload.get("short_description")
             or place_payload.get("description")
             or ""
         )
-        long_desc = (
-            place_payload.get("description_long")
+        long_description = (
+            place_payload.get("long_description")
             or place_payload.get("description_html")
             or ""
         )
@@ -50,8 +50,8 @@ class Command(BaseCommand):
             place, created = Place.objects.update_or_create(
                 title=title,
                 defaults={
-                    "description_short": short_desc,
-                    "description_long": long_desc,
+                    "short_description": short_description,
+                    "long_description": long_description,
                     "longitude": lng,
                     "latitude": lat,
                 },
