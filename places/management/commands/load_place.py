@@ -36,12 +36,12 @@ class Command(BaseCommand):
             raise CommandError("Invalid or missing coordinates in JSON")
 
         short_description = (
-            place_payload.get("short_description")
+            place_payload.get("description_short")
             or place_payload.get("description")
             or ""
         )
         long_description = (
-            place_payload.get("long_description")
+            place_payload.get("description_long")
             or place_payload.get("description_html")
             or ""
         )
